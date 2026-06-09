@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>إلى هنا الروح.. عوضكِ المكتوب 📖❤️</title>
+    <style>
+        :root {
+            --white-bg: #ffffff;
+            --soft-white: #fffbfc;
+            --cozy-red: #9e2a2b; 
+            --dark-burgundy: #5e1617; 
+            --text-dark: #2b1a1a;
+            --line-color: #f3e1e2;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', 'Cairo', serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--soft-white);
+            background-image: radial-gradient(circle, transparent 40%, rgba(158, 42, 43, 0.05) 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 12px;
+        }
+
+        /* 🎬 1. أنيميشن الدخول الفخم السينمائي */
+        #intro-splash {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d0404;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 1;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .splash-text {
+            font-size: 2.2rem;
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px rgba(255,255,255,0.6);
+            animation: textGlow 3s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { opacity: 0.3; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* 🔒 2. شاشة القفل بطلب الباسورد */
+        #lock-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #2b0b0c, var(--dark-burgundy));
+            color: var(--white-bg);
+            display: none; /* يتم إظهاره بعد الاسبلاش */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glowing-heart {
+            font-size: 3.5rem;
+            color: var(--cozy-red);
+            animation: heartBeat 1.5s infinite alternate;
+            margin-bottom: 15px;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(0.9); }
+            100% { transform: scale(1.1); }
+        }
+
+        .lock-intro h2 { font-size: 1.7rem; margin-bottom: 12px; color: #fcedee; }
+        .lock-intro p { font-size: 0.95rem; line-height: 1.6; color: #dcb6b8; margin-bottom: 25px; }
+
+        .input-group {
+            display: flex; gap: 10px; direction: ltr;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 8px 16px; border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px); width: 100%; max-width: 290px;
+            justify-content: space-between;
+        }
+
+        .input-group input {
+            width: 60%; padding: 8px; border: none;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            text-align: center; font-size: 1.1rem; outline: none;
+            background: transparent; color: white; font-weight: bold;
+        }
+
+        .lock-btn {
+            background: linear-gradient(135deg, var(--cozy-red), #be3e40);
+            color: white; border: none; padding: 8px 20px;
+            border-radius: 25px; cursor: pointer; font-weight: bold;
+        }
+
+        .error-msg { color: #ffb3b4; margin-top: 15px; font-size: 0.9rem; display: none; }
+
+        /* 📱 3. الحاوية المتوافقة 100% مع الموبايل */
+        #main-content {
+            display: none; width: 100%; max-width: 430px; z-index: 1;
+        }
+
+        .book-page {
+            background: var(--white-bg);
+            background-image: linear-gradient(var(--line-color) 1px, transparent 1px);
+            background-size: 100% 28px;
+            padding: 25px 20px 20px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(94, 22, 23, 0.06);
+            border: 1px solid #f5e6e7;
+            position: relative;
+            line-height: 28px;
+        }
+
+        .book-page::before {
+            content: ''; position: absolute; top: 0; bottom: 0; right: 12px; width: 1px;
+            background: rgba(158, 42, 43, 0.12);
+        }
+
+        .page-indicator {
+            text-align: center; font-size: 0.8rem; color: #8a7373; margin-bottom: 15px;
+            background: rgba(158, 42, 43, 0.04); padding: 2px 8px; border-radius: 20px; display: block;
+        }
+
+        .page-tab { display: none; min-height: 280px; }
+        .page-tab.active { display: block; animation: pageFlip 0.4s ease-out; }
+
+        @keyframes pageFlip { 
+            from { opacity: 0; transform: translateX(15px); } 
+            to { opacity: 1; transform: translateX(0); } 
+        }
+
+        .novel-card {
+            background: rgba(255, 255, 255, 0.95); border-right: 3px solid var(--cozy-red);
+            padding: 12px; border-radius: 4px; margin-bottom: 15px; font-size: 0.95rem;
+        }
+
+        /* ستايل العدادات المزدوجة */
+        .v-counter {
+            background: #fff6f6; padding: 10px; border-radius: 10px;
+            border: 1px solid #f5dadb; text-align: center; margin: 12px 0;
+        }
+        .v-counter h5 { font-size: 0.85rem; color: var(--dark-burgundy); margin-bottom: 5px; }
+
+        .timer-grid { display: flex; justify-content: space-around; direction: ltr; }
+        .time-element { font-size: 1.1rem; font-weight: bold; color: var(--cozy-red); }
+        .time-element label { display: block; font-size: 0.65rem; color: var(--text-dark); }
+
+        .creative-btn {
+            background: linear-gradient(135deg, var(--cozy-red), var(--dark-burgundy));
+            color: white; border: none; padding: 10px 16px; border-radius: 20px;
+            cursor: pointer; font-weight: bold; font-size: 0.85rem; width: 100%;
+            margin-top: 8px; box-shadow: 0 4px 10px rgba(158, 42, 43, 0.15);
+        }
+
+        .option-btn {
+            background: var(--white-bg); border: 1px solid #e2cfd0; padding: 10px 12px;
+            border-radius: 8px; margin: 6px 0; width: 100%; text-align: right;
+            font-size: 0.9rem; color: var(--text-dark);
+        }
+        .option-btn:active { background: #fff0f1; border-color: var(--cozy-red); }
+
+        .activity-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0; }
+        .grid-act-btn {
+            background: #fffcfc; border: 1px dashed var(--cozy-red); padding: 10px 5px;
+            border-radius: 8px; font-size: 0.8rem; text-align: center; cursor: pointer;
+        }
+
+        .tree-container { text-align: center; font-size: 3.5rem; margin: 10px 0; cursor: pointer; user-select: none; }
+        .tree-container:active { transform: scale(1.1) rotate(5deg); }
+
+        .page-navigation {
+            display: flex; justify-content: space-between; margin-top: 25px;
+            padding-top: 12px; border-top: 1px solid #f5e6e7;
+        }
+
+        .nav-arrow-btn {
+            background: none; border: 1px solid var(--cozy-red); color: var(--cozy-red);
+            padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: bold;
+        }
+        .nav-arrow-btn:disabled { border-color: #e5d5d6; color: #ccc; }
+
+        .petal { position: fixed; color: var(--cozy-red); pointer-events: none; opacity: 0.3; animation: fadeFall linear infinite; z-index: 0; }
+        @keyframes fadeFall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 0.4; }
+            100% { transform: translateY(100vh) rotate(180deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🎬 1. أنيميشن الدخول السينمائي "لـ هنا الروح" -->
+    <div id="intro-splash">
+        <div class="splash-text">لـ هُنا الرّوح.. ❤️</div>
+    </div>
+
+    <!-- 🔒 2. شاشة قفل رشيقة ومشجعة قبل الامتحان -->
+    <div id="lock-screen">
+        <div class="glowing-heart">❤️</div>
+        <div class="lock-intro">
+            <h2>خدي نَفَس عميق يا هنا الروح.. 🌸</h2>
+            <p>سيبك من لغبطة الإنجليزي والامتحانات، وافتحي الباب ده بباسورد يوم لقاء أرواحنا (يوم-شهر)، وافتكري إن أحمد جنبك وسندك في كل خطوة.</p>
+        </div>
+        <div class="input-group">
+            <input type="text" id="password-input" placeholder="05-06" maxlength="5">
+            <button class="lock-btn" onclick="checkPassword()">ادخلي لقلبي</button>
+        </div>
+        <div class="error-msg" id="error-message">تاريخنا ثابت يا ملهمتي، ركزي واكتبيه صح.. ❤️</div>
+    </div>
+
+    <!-- 📱 3. المحتوى الرئيسي للموقع -->
+    <div id="main-content">
+        <div class="book-page">
+            <header style="text-align: center; margin-bottom: 5px;">
+                <h1 style="font-size: 1.3rem; color: var(--cozy-red); font-weight: bold;">أنتِ أقوى من أي امتحان.. يا هنا 🌸</h1>
+            </header>
+
+            <div class="page-indicator" id="page-num-indicator">الفصل الأول: شحنات وعدادات الزمن (صفحة ١ من ٨)</div>
+
+            <!-- صفحة 1: شحنة الامتحان + العدادات التنازلية والتصاعدية المترتبة بالملي -->
+            <div id="tab1" class="page-tab active">
+                <div class="novel-card" style="background: #fff5f5; border-right-color: #2a9e43; text-align: center; padding: 10px;">
+                    <h4 style="color: #2a9e43; margin-bottom: 4px; font-size:0.9rem;">💪 شحنة فورية قبل اللجنة:</h4>
+                    <p style="font-size: 0.85rem; line-height: 1.5;">انسى الإنجليزي الرخم خلاص راح لحاله. ركزي في ورقة انهارده وحلي بهدوء.. ربنا شايلك الأحسن، وأحمد مستنيكي تطلعي بالسلامة والضحكة منورة وشك.</p>
+                </div>
+                
+                <!-- ⏱️ عداد 1: عداد التنازلي لنهاية الامتحانات (٣ أيام) -->
+                <div class="v-counter" style="border-right: 3px solid #be3e40;">
+                    <h5>⏳ الوقت المتبقي على انتهاء الامتحانات والحرية التامة:</h5>
+                    <div class="timer-grid">
+                        <div class="time-element"><span id="exam-sec">00</span><label>ثانية</label></div>
+                        <div class="time-element"><span id="exam-min">00</span><label>دقيقة</label></div>
+                        <div class="time-element"><span id="exam-hr">00</span><label>ساعة</label></div>
+                        <div class="time-element"><span id="exam-day">03</span><label>يوم</label></div>
+                    </div>
+                </div>
+
+                <!-- 💞 عداد 2: عداد التعارف المستمر مالتنا -->
+                <div class="v-counter" style="border-right: 3px solid #2a9e43;">
+                    <h5>💞 عمر ارتباطنا ونبض قلوبنا سوا بالثانية:</h5>
+                    <div class="timer-grid">
+                        <div class="time-element"><span id="meet-sec">00</span><label>ثانية</label></div>
+                        <div class="time-element"><span id="meet-min">00</span><label>دقيقة</label></div>
+                        <div class="time-element"><span id="meet-hr">00</span><label>ساعة</label></div>
+                        <div class="time-element"><span id="meet-day">00</span><label>يوم</label></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- صفحة 2: فعالية كوميدية تضحكها (بحيراوي وكايروشيان) -->
+            <div id="tab2" class="page-tab">
+                <div class="novel-card">
+                    <h4 style="color: var(--cozy-red); text-align: center; margin-bottom: 8px;">😂 قاموس: بنت القاهرة السفسيتكيد وعيال البحيرة الأكابر:</h4>
+                    <p style="font-size: 0.85rem; text-align: center; color: #666; margin-bottom: 10px;">اضغطي وشوفي فرق المصطلحات والترجمة مالتنا عشان تضحكي:</p>
+                    <div class="activity-grid">
+                        <div class="grid-act-btn" onclick="dialect(1)">🥛 المَج والـ كوباية</div>
+                        <div class="grid-act-btn" onclick="dialect(2)">🚍 الميكروباص والمشروع</div>
+                        <div class="grid-act-btn" onclick="dialect(3)">🥖 الفينو والعيش</div>
+                        <div class="grid-act-btn" onclick="dialect(4)">🚉 محطة مصر والقطر</div>
+                    </div>
+                    <p id="dialect-reply" style="text-align: center; font-weight: bold; color: var(--dark-burgundy); font-size: 0.9rem; min-height: 40px; padding: 5px; line-height: 1.4;"></p>
+                </div>
+            </div>
+
+            <!-- صفحة 3: تعويض عقدة الإنجليزي الرخم -->
+            <div id="tab3" class="page-tab">
+                <div class="novel-card">
+                    <h4 style="color: var(--cozy-red); text-align: center; margin-bottom: 8px;">📝 امتحان الإنجليزي البديل والأهم (بدون درجات رغلسة):</h4>
+                    <p style="font-size: 0.85rem; margin-bottom: 10px; color: #444; text-align: center;">لو جالك السؤال ده في اللجنة انهارده هتجاوبي إيه؟<br><b>Question: "Who is the owner of Ahmed's heart?"</b></p>
+                    <button class="option-btn" onclick="engExam(1)">A) Hana (ملهمته وعشقه والروح)</button>
+                    <button class="option-btn" onclick="engExam(2)">B) Hana (البنت اللي ضحكتها بتنور دنيته في ثانية)</button>
+                    <button class="option-btn" onclick="engExam(3)">C) All the above (كل ما سبق وبشدة)</button>
+                    <p id="eng-reply" style="margin-top: 10px; font-weight: bold; color: #2a9e43; text-align: center; min-height: 28px;"></p>
+                </div>
+            </div>
+
+            <!-- صفحة 4: عهد التعويض الصادق ومحو وجع الماضي مالتها -->
+            <div id="tab4" class="page-tab">
+                <div class="novel-card" style="border-right-color: gold;">
+                    <h4 style="color: var(--dark-burgundy); margin-bottom: 8px; text-align: center;">💎 وعد وعهد بـ التعويض المطلق:</h4>
+                    <p style="font-size: 0.9rem; line-height: 1.6; color: #332222; text-align: justify;">
+                        يا هنا.. أنا عارف ومقدر إنك اتعذبتي كتير أوي في ماضيكي وشوفتي قسوة ووجع كسروا حتت جوة قلبك. بس أنا عايزك تبصي في عيني النهاردة وتسمعيني: <b>كل الوجع ده انتهى</b>. 
+                        ربنا بعتني ليكي عشان أكون العوض والأمان والراجل اللي يشيلك فوق راسه، ويمسحلك أي ذكرى وحشة عيشتيها. من النهاردة مفيش دموع، فيه بس ضحكة صافية ومستقبل نضيف نبنيه سوا بالحب مالتنا.
+                    </p>
+                </div>
+                <div class="novel-card" style="background: #fafafa; border-right-color: var(--cozy-red); text-align: center;">
+                    <p style="font-size: 0.85rem; font-style: italic; color: var(--cozy-red);">"ورأيتُ في عينيكِ فجرًا أحمدَا.. يمحو ظلامًا في الحياةِ قد انقضى"</p>
+                </div>
+            </div>
+
+            <!-- صفحة 5: رادار الأمان السند لـ هنا الروح -->
+            <div id="tab5" class="page-tab">
+                <div class="novel-card" style="text-align: center;">
+                    <h4 style="color: var(--cozy-red); margin-bottom: 5px;">🛡️ زرار الأمان وطرد التوتر والماضي:</h4>
+                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 12px;">لو حسيتي بخوف من اللجنة، أو افتكرتي أي تعب قديم ومضايقك، خبطي هنا فوراً واستدعي ضهرك:</p>
+                    <button class="creative-btn" style="background:#2b1a1a;" onclick="triggerSafety()">اضغطي لاستدعاء الأمان الحقيقي 🔓</button>
+                    <div id="safety-card" style="display:none; margin-top: 15px; padding: 10px; background: #fffaf0; border: 1px dashed orange; border-radius: 8px; font-weight: bold; color: var(--dark-burgundy); font-size: 0.85rem; line-height: 1.5;"></div>
+                </div>
+            </div>
+
+            <!-- صفحة 6: صندوق تفاصيلنا العفوية والـ Inside Jokes -->
+            <div id="tab6" class="page-tab">
+                <div class="novel-card" style="text-align: center;">
+                    <h4 style="color: var(--cozy-red); margin-bottom: 5px;">📦 صندوق تفاصيلنا وذكرياتنا العفوية:</h4>
+                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 8px;">دوسي ونبشي في صندوق الضحك والدعم العشوائي مالتنا:</p>
+                    <button class="creative-btn" style="background:#5e1617" onclick="revealMemory()">اسحبي تفصيلة عشوائية 🎲</button>
+                    <p id="memory-display" style="margin-top: 12px; font-weight: bold; color: var(--cozy-red); font-style: italic; min-height: 28px; font-size: 0.9rem;"></p>
+                </div>
+            </div>
+
+            <!-- صفحة 7: شجرة الورد التفاعلية اللانهائية -->
+            <div id="tab7" class="page-tab">
+                <div class="novel-card" style="text-align: center;">
+                    <h4 style="color: var(--cozy-red); margin-bottom: 5px;">🌸 شجرة حب أحمد وهنا الروح:</h4>
+                    <p style="font-size: 0.8rem; color: #666;">كل ما تدوسي على الشجرة هتكبر وتطلع كلمة حب وسند سرية وجديدة ليكي:</p>
+                    <div class="tree-container" onclick="growTree()">🌳</div>
+                    <p id="tree-status" style="font-size: 0.85rem; font-weight: bold; color: #2a9e43;">الحالة: بذرة حب دافية نبتت لتعوضك</p>
+                    <p id="tree-reply" style="margin-top: 10px; font-weight: bold; color: var(--dark-burgundy); font-size: 0.9rem; min-height: 35px; background: #fffcfc; padding: 5px; border-radius: 6px;"></p>
+                </div>
+            </div>
+
+            <!-- صفحة 8: مكعب العواطف والتوقعات السحرية للجنة -->
+            <div id="tab8" class="page-tab">
+                <div class="novel-card" style="text-align: center;">
+                    <h4 style="color: var(--cozy-red); margin-bottom: 5px;">🎲 مكعب الحظ والدعم للجنة انهارده:</h4>
+                    <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">ارمي مكعب أحمد السحري وشوفي حظك ونصيحتك في اللجنة:</p>
+                    <button class="creative-btn" style="background: linear-gradient(135deg, #be3e40, var(--cozy-red));" onclick="rollDice()">ارمي المكعب 🎲</button>
+                    <p id="dice-reply" style="margin-top: 15px; font-weight: bold; color: var(--cozy-red); font-size: 0.95rem; min-height: 30px;"></p>
+                </div>
+                <div class="novel-card" style="text-align: center; border-right-color: #2a9e43; margin-top: 10px; padding: 10px;">
+                    <p style="font-size: 0.9rem; font-weight: bold; color: var(--cozy-red);">يالا ادخلي لجنتك بقلب ماليان أمان وضحكة، أحمد واقف في ضهرك ومعاكي بروح بدعواته في كل ثانية.. ركزي وحلي كويس يا هنا الروح! ❤️🦾</p>
+                </div>
+            </div>
+
+            <!-- أزرار تقليب الصفحات السفلية -->
+            <div class="page-navigation">
+                <button class="nav-arrow-btn" id="prev-btn" onclick="changePage(-1)" disabled>« السابق</button>
+                <button class="nav-arrow-btn" id="next-btn" onclick="changePage(1)">التالي »</button>
+            </div>
+
+            <footer style="text-align: center; margin-top: 20px; font-size: 0.75rem; color: #ba9a9b;">
+                كُتبت بصدق وعشق بـ قلم أحمد.. خطوة بخطوة لدعم هنا الروح ❤️
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const totalPages = 8;
+        let treeClicks = 0;
+
+        const pageNames = [
+            "الفصل الأول: شحنات وعدادات الزمن",
+            "الفصل الثاني: بحيراوي وكايروشيان",
+            "الفصل الثالث: عوض الإنجليزي",
+            "الفصل الرابع: عهد بالتعويض",
+            "الفصل الخامس: رادار الأمان السند",
+            "الفصل السادس: صندوق تفاصيلنا",
+            "الفصل السابع: شجرة الحب اللانهائية",
+            "الفصل الثامن: مكعب الحظ للجنة"
+        ];
+
+        const memories = [
+            "أول 'أهلاً' اتقالت وهزت الشات والروح بيننا 💬",
+            "لما بنتأخر في الرد والاتنين بيبقوا باصيين في الـ Typing بلهفة 🥺",
+            "الضحكة العفوية اللي بتطلع من القلب بسبب إيفيه عابر مالتنا 😂",
+            "سهرتنا سوا والكلام الرقيق اللي مبيخلصش لحد ما الفجر يفتح عينه 🌌",
+            "رقة أسلوبك وعيونك اللي خلت أحمد يقرر يقلب مبرمج رومانسي عشان يفرحك مالتنا ❤️"
+        ];
+
+        const safetyMessages = [
+            "🔒 أحمد بيقولك: أنا حمايتك وضهرك وعوضك عن كل دمعة نزلت من عينك وعن كل عذاب شوفتيه في ماضيكي. ادخلي مطمنة تماماً.",
+            "🔒 طول ما أنا في الدنيا، مفيش وجع قديم هيقرب منك تاني، الماضي بتاعك اتمسح بوجودي والنهاردة بتبدأ روايتنا على يقين ونضافة.",
+            "🔒 ركزي في ورقتك بس يا هنا الروح، وسيبك من أي خوف.. المستقبل مترتب بالحب والأمان ليكي لوحدك وبس."
+        ];
+
+        const treeReplies = [
+            "🌸 أحمد بيحبك في كل ثانية أكتر من الثواني اللي قبلها!",
+            "🌹 ضحكتكِ الصبح قبل اللجنة بتنور الدنيا في البحيرة والقاهرة وبتمحي أي زعل قديم!",
+            "🌷 فداكي مليون امتحان إنجليزي رخم، المهم عيونك تضل بتلمع بالأمان مالتنا.",
+            "🌻 ربنا هيجبر بخاطرك انهارده وهتطلعي مبسوطة بالملي!",
+            "🌺 انتِ أجمل عوض ربنا أدهوني في دنيتي.. بحبك مالتنا يا هنا الروح."
+        ];
+
+        const diceReplies = [
+            "🎲 (الحظ انهارده 100%): الأسئلة هتيجي مباشرة وسهلة وهتحلي بطلاقة مدهشة تنسيكي الإنجليزي!",
+            "🎲 (رسالة سرية): أحمد فخور بيكِ وبصبرك وتعبك في الأيام دي، هانت خالص باقي ٣ أيام بس يا بطل!",
+            "🎲 (توقع سحري): بعد اللجنة هتطلعي متبسمة وهتبعتيلي تقوليلي 'أحمد أنا حليت حلو جداً'!",
+            "🎲 (طاقة حب للجنة): خدي نَفَس عميق، وافتكري إن فيه قلب شغال في خلفية الكون بيدعيلك في كل سجدة بالتعويض والجبر."
+        ];
+
+        // تشغيل أنيميشن الدخول "لـ هنا الروح" فور فتح الموقع
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('intro-splash');
+                splash.style.opacity = '0';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    document.getElementById('lock-screen').style.display = 'flex';
+                }, 1500);
+            }, 2500); // تعرض الكلمة لمدة ثانيتين ونصف ثم تختفي ناعماً
+        });
+
+        function checkPassword() {
+            const input = document.getElementById('password-input').value.trim();
+            const error = document.getElementById('error-message');
+            if(input === "05-06" || input === "5-6" || input === "٠٥-٠٦") {
+                document.getElementById('lock-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('lock-screen').style.display = 'none';
+                    document.getElementById('main-content').style.display = 'block';
+                }, 500); 
+                startApp();
+            } else { error.style.display = 'block'; }
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            if(currentPage < 1) currentPage = 1;
+            if(currentPage > totalPages) currentPage = totalPages;
+
+            document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab${currentPage}`).classList.add('active');
+
+            document.getElementById('page-num-indicator').innerText = `${pageNames[currentPage-1]} (صفحة ${currentPage} من ${totalPages})`;
+            
+            document.getElementById('prev-btn').disabled = (currentPage === 1);
+            document.getElementById('next-btn').disabled = (currentPage === totalPages);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function dialect(type) {
+            const reply = document.getElementById('dialect-reply');
+            if(type === 1) reply.innerText = "🥛 عند هنا في القاهرة اسمه 'مج كافيه'.. في البحيرة عندنا اسمه 'كوباية شاي دافية متينة مالتنا' 😂";
+            else if(type === 2) reply.innerText = "🚍 هنا في القاهرة بتقول 'ميكروباص يسطا'.. احنا في البحيرة بنقول 'المشروع وصل يا أبا' 🚐";
+            else if(type === 3) reply.innerText = "🥖 في القاهرة 'فينو وباتيه'.. في البحيرة أكلنا بلدي والخير كله عيش فلاحي يفتح النفس 🌾";
+            else if(type === 4) reply.innerText = "🚉 هنا في القاهرة بتركب 'مترو الأنفاق'.. في البحيرة القطر العادي سيد الناس ومبيمشيش غير بالحب 🚂";
+        }
+
+        function engExam(choice) {
+            const reply = document.getElementById('eng-reply');
+            reply.innerText = "🎯 الإجابة صحيحة بالملي! أحمد بيحبك إنجليزي وعربي وبحيري وقاهري وفوق ما تتخيلي، فداكي أي امتحان فات! ❤️";
+        }
+
+        function triggerSafety() {
+            const card = document.getElementById('safety-card');
+            card.style.display = 'block';
+            const randomIdx = Math.floor(Math.random() * safetyMessages.length);
+            card.innerText = safetyMessages[randomIdx];
+        }
+
+        function revealMemory() {
+            const display = document.getElementById('memory-display');
+            const randomIdx = Math.floor(Math.random() * memories.length);
+            display.style.opacity = 0;
+            setTimeout(() => {
+                display.innerText = memories[randomIdx];
+                display.style.opacity = 1;
+            }, 200);
+        }
+
+        function growTree() {
+            treeClicks++;
+            const tree = document.querySelector('.tree-container');
+            const status = document.getElementById('tree-status');
+            const reply = document.getElementById('tree-reply');
+            
+            if(treeClicks < 3) {
+                tree.innerText = "🌱"; status.innerText = "الحالة: البذرة بدأت تنبت وتكبر بحب أحمد السند..";
+            } else if(treeClicks >= 3 && treeClicks < 6) {
+                tree.innerText = "🌿"; status.innerText = "الحالة: كبرت وبقت غصن أخضر ماليان أمان بيمحي الوجع القديم!";
+            } else {
+                tree.innerText = "🌸🌳🌸"; status.innerText = "الحالة: شجرة عملاقة مزهرة بالتعويض والعشق اللانهائي لـ هنا الروح!";
+            }
+            
+            const randomIdx = Math.floor(Math.random() * treeReplies.length);
+            reply.innerText = treeReplies[randomIdx];
+            for(let i=0; i<4; i++) { setTimeout(createPetal, i*150); }
+        }
+
+        function rollDice() {
+            const reply = document.getElementById('dice-reply');
+            reply.innerText = "🎲 جاري رمي مكعب أحمد السحري بالحب والدعم مالتنا...";
+            setTimeout(() => {
+                const randomIdx = Math.floor(Math.random() * diceReplies.length);
+                reply.innerText = diceReplies[randomIdx];
+            }, 600);
+        }
+
+        function startApp() {
+            // ⏰ 1. تشغيل العداد التنازلي لانتهاء الامتحانات (٣ أيام من الآن)
+            const examEndDate = new Date();
+            examEndDate.setDate(examEndDate.getDate() + 3); 
+
+            function updateExamTimer() {
+                const now = new Date();
+                const diff = examEndDate - now;
+                if(diff <= 0) {
+                    document.getElementById('exam-day').innerText = "00";
+                    document.getElementById('exam-hr').innerText = "00";
+                    document.getElementById('exam-min').innerText = "00";
+                    document.getElementById('exam-sec').innerText = "00";
+                    return;
+                }
+                document.getElementById('exam-day').innerText = String(Math.floor(diff / (1000*60*60*24))).padStart(2, '0');
+                document.getElementById('exam-hr').innerText = String(Math.floor((diff % (1000*60*60*24)) / (1000*60*60))).padStart(2, '0');
+                document.getElementById('exam-min').innerText = String(Math.floor((diff % (1000*60*60)) / (1000*60))).padStart(2, '0');
+                document.getElementById('exam-sec').innerText = String(Math.floor((diff % (1000*60)) / 1000)).padStart(2, '0');
+            }
+            setInterval(updateExamTimer, 1000); updateExamTimer();
+
+            // 💞 2. تشغيل عداد عمر ارتباطنا وتعارقنا المستمر
+            const meetStartDate = new Date(2026, 5, 5, 0, 0, 0); 
+            function updateMeetTimer() {
+                const now = new Date(); const diff = now - meetStartDate;
+                document.getElementById('meet-day').innerText = String(Math.floor(diff / (1000*60*60*24))).padStart(2, '0');
+                document.getElementById('meet-hr').innerText = String(Math.floor((diff % (1000*60*60*24)) / (1000*60*60))).padStart(2, '0');
+                document.getElementById('meet-min').innerText = String(Math.floor((diff % (1000*60*60)) / (1000*60))).padStart(2, '0');
+                document.getElementById('meet-sec').innerText = String(Math.floor((diff % (1000*60)) / 1000)).padStart(2, '0');
+            }
+            setInterval(updateMeetTimer, 1000); updateMeetTimer();
+            setInterval(createPetal, 700);
+        }
+
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const symbols = ['❤️', '✨', '🌹', '🌸', '👑'];
+            petal.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = Math.random() * 4 + 4 + 's'; 
+            const size = Math.random() * 12 + 12;
+            petal.style.fontSize = size + 'px';
+            document.body.appendChild(petal);
+            setTimeout(() => petal.remove(), 6000);
+        }
+    </script>
+</body>
+</html>
